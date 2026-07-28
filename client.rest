@@ -1,0 +1,43 @@
+@baseUrl = http://localhost:3000
+
+###  Busca todos os recados
+
+# @name  ControllerMsgAll
+GET {{baseUrl}}/recados/
+
+
+
+###  busca somente um recado 
+
+# @name  ControllerMsgOne
+GET {{baseUrl}}/recados/2
+
+
+### Cria um novo Recado
+
+# @name  ControllerMsgCreate
+POST {{baseUrl}}/recados
+Content-Type: application/json
+
+{
+    "texto": "leonardo",
+    "de": "leonardo",
+    "para": "jacqueline"
+}
+
+###  Atualiza um recado
+# @name  ControllerMsgUpdate
+PATCH   {{baseUrl}}/recados/3
+Content-Type: application/json
+
+  {
+    "texto": "Atualizado",
+    "bla bla": "testando seguranca"
+    
+  
+  }
+
+### Deleta um Recado 
+# @name  ControllerMsgDelete
+DELETE   {{baseUrl}}/recados/3
+
