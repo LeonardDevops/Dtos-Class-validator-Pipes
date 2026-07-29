@@ -25,7 +25,7 @@ export class RecadosController {
   }
 
   @Get(':id/') // decorator de parametros  dinamico :Params
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     // exibindo as chaves
     return this.recadosControllerService.findOne(id);
   }
@@ -42,8 +42,7 @@ export class RecadosController {
 
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
-    return  this.recadosControllerService.remove(id);
- 
+    return this.recadosControllerService.remove(id);
   }
   // @Get(':id/hello')
   // hello() {

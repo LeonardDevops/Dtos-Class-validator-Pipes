@@ -2,9 +2,16 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Recado } from '@/recados/entities/recado.entity';
 import { CreateRecadoDto } from './dtos/create-recado.dto';
 import { UpdateRecadoDto } from './dtos/update-recado.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RecadosService {
+  constructor(
+    @InjectRepository(Recado) // usar decorator InjectRepository pra injetar os dados da class Recado
+    private readonly recadoRepository: Repository<Recado>,
+  ) {}
+
   private lastId = 2;
   private recados: Recado[] = [
     {
@@ -25,14 +32,27 @@ export class RecadosService {
     },
   ];
 
-  findAll() {
-    return this.recados;
+  async findAll() {
+    try {
+      const recados = await this.recadoRepository.find();
+      return recados;
+    } catch (error: any) {
+      console.log(error);
+    }
   }
 
-  findOne(id: string) {
-    const recado = this.recados.find((item) => item.id === +id);
-    if (recado) return recado;
-    throw new HttpException('esse erro e do servidor', HttpStatus.NOT_FOUND);
+  async findOne(id: number) {
+    try {
+      const recado = await this.recadoRepository.findOne({
+        where: {
+          id,
+        },
+      });
+      if (recado) return recado;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException('esse erro e do servidor', HttpStatus.NOT_FOUND);
+    }
   }
 
   create(body: CreateRecadoDto) {
