@@ -12,26 +12,6 @@ export class RecadosService {
     private readonly recadoRepository: Repository<Recado>,
   ) {}
 
-  private lastId = 2;
-  private recados: Recado[] = [
-    {
-      id: 1,
-      texto: 'RECADOS UM',
-      de: 'leonardo',
-      para: 'jacqueline',
-      lido: false,
-      data: new Date(),
-    },
-    {
-      id: 2,
-      texto: 'RECADOS DOIS',
-      de: 'zoe',
-      para: 'jacqueline',
-      lido: false,
-      data: new Date(),
-    },
-  ];
-
   async findAll() {
     try {
       const recados = await this.recadoRepository.find();
@@ -55,34 +35,39 @@ export class RecadosService {
     }
   }
 
-  create(body: CreateRecadoDto) {
-    this.lastId++;
-    const newRecado: Recado = {
+  async create(body: CreateRecadoDto) {
+    const createRecado = {
       ...body,
       data: new Date(),
       lido: false,
-      id: this.lastId,
     };
-    this.recados.push(newRecado);
-    return this.recados;
+    const recado = this.recadoRepository.create(createRecado);
+    return await this.recadoRepository.save(recado);
   }
 
-  update(id: number, body: UpdateRecadoDto) {
-    const recadoExistenteIndex = this?.recados.findIndex(
-      (item) => item?.id === +id,
-    );
-    if (recadoExistenteIndex >= 0) {
-      const recadosExistentes = this?.recados[recadoExistenteIndex];
-      this.recados[recadoExistenteIndex] = {
-        ...recadosExistentes,
-        ...body,
-      };
-    }
+  async update(id: number, updateRecadoDto: UpdateRecadoDto) {
+    const partialUpdateRecadoDto = {
+      texto: updateRecadoDto?.texto,
+      lido: updateRecadoDto?.lido,
+    };
+    const updateRecado = await this.recadoRepository.preload({
+      id,
+      ...partialUpdateRecadoDto,
+    });
+
+    if (!updateRecado) return 'erro';
+
+    return this.recadoRepository.save(updateRecado);
   }
 
-  remove(id) {
+  async remove(id: number) {
     // filtra dentro do meu objeto recados todos os itens  diferente do  id enviado na requisicao ;
-    this.recados = this.recados.filter((item) => item.id !== +id, {});
-    return this.recados;
+    const deleteRecado = await this.recadoRepository.findOneBy({
+      id,
+    });
+
+    if (!deleteRecado) return 'erro';
+
+    return this.recadoRepository.remove(deleteRecado);
   }
 }

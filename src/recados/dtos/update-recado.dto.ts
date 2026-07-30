@@ -1,9 +1,13 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateRecadoDto } from './create-recado.dto';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 export class UpdateRecadoDto extends PartialType(CreateRecadoDto) {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   readonly texto!: string;
+
+  @IsBoolean()
+  @IsOptional()
+  readonly lido?: boolean;
 }

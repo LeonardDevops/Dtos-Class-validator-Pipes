@@ -31,17 +31,20 @@ export class RecadosController {
   }
 
   @Post()
-  create(@Body() createRecadoDto: CreateRecadoDto) {
-    return this.recadosControllerService.create(createRecadoDto);
+  async create(@Body() createRecadoDto: CreateRecadoDto) {
+    return await this.recadosControllerService.create(createRecadoDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateRecadoDto: UpdateRecadoDto) {
-    this.recadosControllerService.update(id, updateRecadoDto);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateRecadoDto: UpdateRecadoDto,
+  ) {
+    return this.recadosControllerService.update(id, updateRecadoDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id') id: number) {
     return this.recadosControllerService.remove(id);
   }
   // @Get(':id/hello')

@@ -10,7 +10,7 @@ GET {{baseUrl}}/recados/
 ###  busca somente um recado 
 
 # @name  ControllerMsgOne
-GET {{baseUrl}}/recados/2
+GET {{baseUrl}}/recados/1
 
 
 ### Cria um novo Recado
@@ -27,17 +27,16 @@ Content-Type: application/json
 
 ###  Atualiza um recado
 # @name  ControllerMsgUpdate
-PATCH   {{baseUrl}}/recados/3
+PATCH   {{baseUrl}}/recados/2
 Content-Type: application/json
 
   {
-    "texto": "Atualizado",
-    "bla bla": "testando seguranca"
-    
+    "texto": "Atualizado 3",
+    "lido": true
   
   }
 
 ### Deleta um Recado 
 # @name  ControllerMsgDelete
-DELETE   {{baseUrl}}/recados/3
+DELETE   {{baseUrl}}/recados/1
 
